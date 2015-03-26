@@ -1,0 +1,5 @@
+TCS:25.73
+ITC:3.25
+Tata Motors:5.41
+Airtel:3.96
+Reliance:8.42
