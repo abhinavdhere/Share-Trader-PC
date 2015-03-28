@@ -3,14 +3,17 @@
 				A BRIEF INTRODUCTION     
 
 
---> You start with a cash of Rs.60,000 and 10 information cards, and go on to buy and sell shares in six top companies.
+--> You start with a cash of Rs.60,000 and 10 information cards, and go on to 
+buy and sell shares in six top companies.
   
 
---> Your information cards will help you judge the possible fluctuations in share prices at the end of the round, and you 
-have to make your investments accordingly.
+--> Your information cards will help you judge the possible fluctuations in 
+share prices at the end of the round, and you have to make your investments 
+accordingly.
 
  
---> At the end of each round, cost fluctuations in cards of all players are added and new share cost is calculated. 
+--> At the end of each round, cost fluctuations in cards of all players are 
+added and new share cost is calculated. 
 
 For the next round, this share cost will be valid.
 
@@ -37,6 +40,9 @@ that company, at a price of Rs.1/share.
 
 7.Rights Issue: Lets you sell all your shares in a bankrupted company at 
 original prices.
+
+--> At the end of the game, the player with a higher amount of cash and money in 
+shares combined will win. 
 
 ********************************************************************************
 
