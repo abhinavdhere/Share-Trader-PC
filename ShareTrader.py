@@ -15,7 +15,7 @@ class NewUser(object):
     '''
     def __init__(self,name):
         self.name=name                      #name of player
-        self.cash=60000.0                     #cash owned by player
+        self.cash=60000.0                   #cash owned by player
         self.stock={}                       #stock owned by player
         self.investedCash=self.getInvested()#cash invested in stock
     
@@ -43,8 +43,10 @@ class NewUser(object):
                 self.stock[company]=stock
             elif company in self.stock:
                 self.stock[company]+=stock
+            print str(stock)+' shares bought in '+company
         except ValueError:
             print "Insufficient Funds!"
+            return ValueError
 
     def sellStock(self,company,stock):
         '''
@@ -57,10 +59,13 @@ class NewUser(object):
                 raise ValueError
             self.stock[company]-=stock
             self.cash+=stock*game.priceMap[company]
+            print str(stock)+' shares of '+company+' sold'
         except ValueError:
-            print "You have only "+str(self.stock[company])+" in "+company+"!"
+            print "You have only "+str(self.stock[company])+" shares in "+company+"!"
+            raise ValueError
         except KeyError:
             print "You do not own any shares in "+company+"!"
+            return ValueError
         
     def getInvested(self):
         '''
@@ -143,6 +148,11 @@ class NewRound(NewGame):
     '''
     def __init__(self):
         self.distribCards()                 #distribute cards at start of round
+        print "\nTo buy shares type 'Name of Company'(space)'Number of Shares'"
+        print "To sell shares type 'Name of Company'(space)'Number of Shares'"
+        print "To pass the turn, type 'pass'"
+        for turnNum in range(3):
+            playTurnUser()
 
     def cardsAvailable(self):
         '''
@@ -209,7 +219,37 @@ class playTurnUser():
     For a user to play one turn of a round
     '''
     def __init__(self):
-        raise NotImplementedError    
+        self.parseInput()
+
+    def parseInput(self):
+        try:
+            inputString=raw_input('>> ')
+            inputString=inputString.strip()#remove whitespace from start and end if present
+            if inputString=='pass' or inputString=='Pass':
+                return None                     #no action needed if pass
+            commandList=inputString.split()     #split input string in list of parameters as below
+            operation=commandList[0]
+            company=commandList[1]
+            stock=int(commandList[2])
+            if operation=='buy':
+                if game.isValidCompany(company):
+                    buy=user.buyStock(company,stock)
+                    if buy==ValueError:
+                        raise ValueError
+                else:
+                    raise ValueError            #error raised if invalid company
+            elif operation=='sell':
+                if game.isValidCompany(company):
+                    sell=user.sellStock(company,stock)
+                    if sell==ValueError:
+                        raise ValueError
+                else:
+                    raise ValueError
+            else:
+                raise ValueError
+        except ValueError:
+            print 'Invalid Input'
+            return self.parseInput()            #recursion if error encountered
     
 def menu():
     '''
@@ -222,24 +262,32 @@ def menu():
     i=int(raw_input("Select option number: "))
     return i
 
+def createUser():
+    '''
+    Creates a new instance of a user
+    '''
+    os.system('cls')
+    name=raw_input("Enter your name: ")
+    user=NewUser(name)
+    return user
+
 def createGame():
     '''
     Creates a new instance of a game
     '''
-    os.system('cls')
-    name=raw_input("Enter your name: ")
     rounds=int(raw_input("Enter num of rounds: "))
     print "Creating a new game against CPU..."
-    time.sleep(1)                           #generates a delay of 1 second to let user read the print statement above
+    time.sleep(1)#generates a delay of 1 second to let user read the print statement above
     game=NewGame(rounds)
     return game
 
-run=False                                   #run flag used to indicate whether loop should run again
+run=True                                   #run flag used to indicate whether loop should run again
 gameNum=1
 while run:
     try:
         i=menu()
         if i==1:
+            user=createUser()
             game=createGame()
             game.roundInit()
             gameNum+=1
@@ -255,5 +303,5 @@ while run:
     except:
         print 'Invalid Entry'
         time.sleep(1)
-user=NewUser('Abhinav')
-game=NewGame(1)
+##user=NewUser('Abhinav')
+##game=NewGame(1)
