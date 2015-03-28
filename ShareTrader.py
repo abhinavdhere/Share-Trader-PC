@@ -15,27 +15,53 @@ class NewUser(object):
     '''
     def __init__(self,name):
         self.name=name                      #name of player
-        self.cash=60000                     #cash owned by player
+        self.cash=60000.0                     #cash owned by player
         self.stock={}                       #stock owned by player
         self.investedCash=self.getInvested()#cash invested in stock
-
+    
     def getStock(self,company):
         '''
         Takes a string company as input. Assumes that company is a valid company.
         Returns the amount of stock owned by player in a company
         '''
-        return self.stock[company]
+        try:
+            return self.stock[company]
+        except KeyError:
+            return 0
 
-    def setStock(self,company,stock):
+    def buyStock(self,company,stock):
         '''
         Increments the amount of stock owned in a company by the int stock.
+        Decrements cash by amount invested
         Assumes that the string company is a valid company 
         '''
-        if company not in self.stock:
-            self.stock[company]=stock
-        if company in self.stock:
-            self.stock[company]+=stock
+        try:
+            if self.cash-stock*game.priceMap[company]<0:
+                raise ValueError
+            self.cash-=stock*game.priceMap[company]
+            if company not in self.stock:
+                self.stock[company]=stock
+            elif company in self.stock:
+                self.stock[company]+=stock
+        except ValueError:
+            print "Insufficient Funds!"
 
+    def sellStock(self,company,stock):
+        '''
+        Decrements the amount of stock owned in a company by the int stock.
+        Increments cash by amount invested
+        Assumes that the string company is a valid company 
+        '''
+        try:
+            if self.stock[company]-stock<0:
+                raise ValueError
+            self.stock[company]-=stock
+            self.cash+=stock*game.priceMap[company]
+        except ValueError:
+            print "You have only "+str(self.stock[company])+" in "+company+"!"
+        except KeyError:
+            print "You do not own any shares in "+company+"!"
+        
     def getInvested(self):
         '''
         Calculates the total cash invested in all stocks
@@ -51,9 +77,9 @@ class NewUser(object):
         '''
         print 'Player Stats:'
         print 'Name: '+self.name
-        print 'Cash in hand: '+str(self.cash)
-        print 'Cash Invested: '+str(self.investedCash)
-        print 'Total Cash: '+str(self.cash+self.investedCash)
+        print 'Cash in hand: Rs. '+str(self.cash)
+        print 'Cash Invested: Rs. '+str(self.getInvested())
+        print 'Total Cash: Rs. '+str(self.cash+self.getInvested())
         
 class NewGame(object):
     '''
@@ -66,7 +92,7 @@ class NewGame(object):
         self.rounds=rounds                  #no. of rounds to be played
         self.priceMap=self.readCompanies()  #reads initial prices & names of companies into priceMap
         os.system('cls') #clear screen
-        print 'Hi '+self.name+'!\n'
+        print 'Hi '+user.name+'!\n'
         print 'The initial stock prices are: \n'
         self.displayPrices()                #prints the initial prices
         
@@ -205,10 +231,10 @@ def createGame():
     rounds=int(raw_input("Enter num of rounds: "))
     print "Creating a new game against CPU..."
     time.sleep(1)                           #generates a delay of 1 second to let user read the print statement above
-    game=NewGame(name,rounds)
+    game=NewGame(rounds)
     return game
 
-run=False                                    #run flag used to indicate whether loop should run again
+run=False                                   #run flag used to indicate whether loop should run again
 gameNum=1
 while run:
     try:
@@ -229,4 +255,5 @@ while run:
     except:
         print 'Invalid Entry'
         time.sleep(1)
-
+user=NewUser('Abhinav')
+game=NewGame(1)
