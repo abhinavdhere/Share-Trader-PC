@@ -1,6 +1,5 @@
 #------------------------------------------------------------------------------------------------------------------------
-#This is an attempt to make a single player game similar to Stock Exchange board game
-#Initial attempt was in C++, this is a second attempt by using Python
+#This is an attempt to make a single player game similar to Stock Exchange board game.
 #
 #Author: Abhinav Dhere
 #Date of Starting: 25 March 2015
