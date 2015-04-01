@@ -1,10 +1,15 @@
-#-------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------
 #This is an attempt to make a single player game similar to Stock Exchange board game
 #Initial attempt was in C++, this is a second attempt by using Python
 #
 #Author: Abhinav Dhere
 #Date of Starting: 25 March 2015
-#-------------------------------------------------------------------------------------
+#
+#
+#License: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+#         See http://creativecommons.org/licenses/by-nc-sa/4.0/ for details.
+#
+#------------------------------------------------------------------------------------------------------------------------
 import os
 import random
 import time
