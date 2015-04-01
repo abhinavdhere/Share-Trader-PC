@@ -114,6 +114,7 @@ class NewGame(object):
         FILE_PATH="Companies.txt"           #file containing names of companies and initial prices
         priceMap={}
         companies=open(FILE_PATH,"r")
+        dumpLine=companies.readline()
         for line in companies:
             line=line.strip('\n')           #strip the newline character
             companyList=line.split(':')     #converts a line in file to list containing name of company & price 
@@ -124,7 +125,8 @@ class NewGame(object):
         '''
         Prints the stock prices of companies
         '''
-        for element in self.priceMap.keys():
+        dictList=sorted(self.priceMap,key=self.priceMap.get)#gives a list of keys sorted by values
+        for element in dictList:            #print all companies & prices in ascending order of price
             print element+':'+str(self.priceMap[element])+' ',
         print '\n'
 
@@ -152,8 +154,8 @@ class NewRound(NewGame):
     '''
     def __init__(self):
         self.distribCards()                 #distribute cards at start of round
-        print "\nTo buy shares type 'Name of Company'(space)'Number of Shares'"
-        print "To sell shares type 'Name of Company'(space)'Number of Shares'"
+        print "\nTo buy shares type buy(space)'Name of Company'(space)'Number of Shares'"
+        print "To sell shares type sell(space)'Name of Company'(space)'Number of Shares'"
         print "To pass the turn, type 'pass'"
         for turnNum in range(3):
             playTurnUser()
@@ -285,7 +287,7 @@ def createGame():
     game=NewGame(rounds)
     return game
 
-run=True                                   #run flag used to indicate whether loop should run again
+run=True                                 #run flag used to indicate whether loop should run again
 gameNum=1
 while run:
     try:
