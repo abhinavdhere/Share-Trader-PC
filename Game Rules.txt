@@ -48,5 +48,3 @@ shares combined will win.
 
 Game written by: Abhinav Dhere
 
-Rules inspired from Stock Exchange Boardgame
-

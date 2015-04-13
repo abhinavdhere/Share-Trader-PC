@@ -263,8 +263,8 @@ def menu():
     Returns menu option number 
     '''
     os.system('cls') #clears screen
-    print "\t\t\tWelcome to the Share Trader PC game!"
-    print "\n1.New Game \n2.Help \n3.Exit"
+    print "\t\t  Welcome to the Share Trader PC game!"
+    print "\n\n\n\t\t\t\t1.New Game \n\n\t\t\t\t2.Help \n\n\t\t\t\t3.Stats \n\n\t\t\t\t4.About\n\n\t\t\t\t5.Exit\n\n"
     i=int(raw_input("Select option number: "))
     return i
 
@@ -287,9 +287,7 @@ def createGame():
     game=NewGame(rounds)
     return game
 
-run=True                                 #run flag used to indicate whether loop should run again
-gameNum=1
-while run:
+def main(run):
     try:
         i=menu()
         if i==1:
@@ -301,13 +299,32 @@ while run:
             
         elif i==2:
             os.system('cls')
-            help=open("Game Rules.txt","r") #reads rules from Game Rules file
-            print help.read()
-            raw_input("Press enter to continue")
+            helpMan=open("Game Rules.txt","r") #reads rules from Game Rules file
+            print helpMan.read()
+            raw_input("Press enter to return to menu")
+
         elif i==3:
+            os.system('cls')
+            scores=open("High Score.txt","r")#reads scores from High Scores file
+            print scores.read()
+            raw_input("Press enter to return to menu")
+        
+        elif i==4:
+            os.system('cls')
+            print "ShareTrader v1.0\n\nWritten by Abhinav Dhere\n"
+            raw_input("Press enter to return to menu")
+
+        elif i==5:
             run=False
     except:
         print 'Invalid Entry'
         time.sleep(1)
+    return run
+        
+run=True                                 #run flag used to indicate whether loop should run again
+gameNum=1
+while run:
+    run=main(run)
+    
 ##user=NewUser('Abhinav')
 ##game=NewGame(1)
