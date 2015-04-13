@@ -306,7 +306,10 @@ def main(run):
         elif i==3:
             os.system('cls')
             scores=open("High Score.txt","r")#reads scores from High Scores file
-            print scores.read()
+            if scores.read()=='':
+                print "No Stats Recorded"
+            else:
+                print scores.read()
             raw_input("Press enter to return to menu")
         
         elif i==4:
