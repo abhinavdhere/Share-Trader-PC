@@ -3,6 +3,7 @@
 #
 #Author: Abhinav Dhere
 #Date of Starting: 25 March 2015
+#Finished Development & started final alpha testing: 14 April 2015#
 #
 #
 #License: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -114,33 +115,20 @@ class NewUser(object):
         '''
         print 'Player Stats:\n'
         print 'Name: '+self.name
-        print 'Cash in hand: Rs. '+str(self.cash)
-        print 'Cash Invested: Rs. '+str(self.getInvested())
-        print 'Total Cash: Rs. '+str(self.cash+self.getInvested())
+        print 'Cash in hand: Rs. '+str(round(self.cash,2))
+        print 'Cash Invested: Rs. '+str(round(self.getInvested(),2))
+        print 'Total Cash: Rs. '+str(round((self.cash+self.getInvested()),2))
         print ''
 
     def __str__(self):
         return self.name
 
-class CPU():
+class CPU(NewUser):
     '''
     Holds stats and functions for CPU
     '''
     def __init__(self):
-        self.name='CPU'
-        self.cash=100000.0                  #cash owned by player
-        self.stock={}                       #stock owned by player
-        self.investedCash=self.getInvested()#cash invested in stock
-    
-    def getStock(self,company):
-        '''
-        Takes a string company as input. Assumes that company is a valid company.
-        Returns the amount of stock owned by player in a company
-        '''
-        try:
-            return self.stock[company]
-        except KeyError:
-            return 0
+        NewUser.__init__(self,'CPU')
 
     def buyStock(self,company,stock):
         '''
@@ -178,14 +166,6 @@ class CPU():
             self.stock[company]=stock
         elif company in self.stock:
             self.stock[company]+=stock
-
-    def specialSell(self,RIcompany,pastPrices):
-        '''
-        For selling in case of Rights Issue
-        '''
-        stock=self.stock[RIcompany]
-        self.stock[RIcompany]=0
-        self.cash+=stock*pastPrices[RIcompany]
         
     def getInvested(self):
         '''
@@ -195,19 +175,6 @@ class CPU():
         for company in self.stock.keys():   #Multiplies the stock in a company by its price and adds all values
             investedCash+=self.stock[company]*game.priceMap[company]
         return investedCash
-
-    def getStats(self):
-        '''
-        Prints the stats of a player at the end of each round
-        '''
-        print 'Player Stats:\n'
-        print 'Cash in hand: Rs. '+str(self.cash)
-        print 'Cash Invested: Rs. '+str(self.getInvested())
-        print 'Total Cash: Rs. '+str(self.cash+self.getInvested())
-        print ''
-
-    def __str__(self):
-        return self.name
         
     
 class NewGame(object):
@@ -264,8 +231,11 @@ class NewGame(object):
         '''
         Starts a new round
         '''
-        for i in range(1,self.rounds+1):    #create new rounds as per self.rounds 
+        print '\nRound number: 1\n'
+        newRound=NewRound()
+        for i in range(2,self.rounds+1):    #create new rounds as per self.rounds 
             print '\nRound number: '+str(i)+'\n'
+            game.displayPrices()
             newRound=NewRound()
 
     def endGame(self):
@@ -395,7 +365,7 @@ class playTurnUser():
                     raise ValueError
             else:
                 raise ValueError
-        except ValueError:
+        except:
             print 'Invalid Input'
             return self.parseInput()            #recursion if error encountered
 
@@ -480,8 +450,26 @@ class playCPU(object):
                     i-=50
                 cpu.buyStock(maxComp,i)
 
-        elif maxValue<0:                    #pass if no shares will rise
-            pass
+        elif maxValue<0:                    #when no shares will rise
+            ch=random.randrange(1,3)        #decision variable
+            if ch==1:                       #if choice is 1, buy randomly without card available
+                noCard=[]
+                for comp in self.companyCards:
+                    if comp not in compMap.keys():
+                        noCard.append[comp]
+                randomComp=random.choice(noCard)
+                try:
+                    if game.priceMap[randomComp]>10:
+                        cpu.buyStock(randomComp,250)
+                    else:
+                        cpu.buyStock(randomComp,500)
+                except ValueError:
+                    i=500
+                    while cpu.cash<game.priceMap[randomComp]*i:
+                        i-=50
+                    cpu.buyStock(randomComp,i)
+            if ch==2:
+                pass
                 
                 
     def playTurn(self):
@@ -616,10 +604,12 @@ class endRound(object):
 
         if RIAvail and player==user:
             ask=raw_input('Use Rights Issue for '+RIcompany+'?(y/n)')
-            if ask=='y':
+            if ask=='y' and player.stock.get(RIcompany,0)!=0:
                 player.specialSell(RIcompany,self.pastPrices)
+            elif player.stock.get(RIcompany,0)==0:
+                print 'Stocks not available in '+RIcompany
 
-        if RIAvail and player==cpu:
+        if RIAvail and player==cpu and player.stock.get(RIcompany,0)!=0:
             player.specialSell(RIcompany,self.pastPrices)
 
     def giveStats(self):

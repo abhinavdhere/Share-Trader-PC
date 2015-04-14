@@ -1,0 +1,7 @@
+Share Trader Alpha Testing:
+
+->Display new stock prices in new round - FIXED
+->Fix cash card bug. The cash % values should add up before execution
+->Consider adding random guess buying for cpu if no card available -FIXED
+->Fix rights issue invalid input bug	-FIXED
+->Inherit CPU from NewUser to remove copied functions	-FIXED
