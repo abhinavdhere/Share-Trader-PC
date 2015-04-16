@@ -264,10 +264,11 @@ class NewRound(NewGame):
     '''
     def __init__(self):
         self.userCreds=self.distribCards()                 #distribute cards at start of round
+        print "\n"
         self.showStocks()
         print "\nTo buy shares type buy(space)'Name of Company'(space)'Number of Shares'"
         print "To sell shares type sell(space)'Name of Company'(space)'Number of Shares'"
-        print "To pass the turn, type 'pass'"
+        print "To pass the turn, type 'pass'\n"
         for userTurnNum in range(3):
             playTurnUser()
         cardMap,companyCards,windfall=self.generateCards()#generate new cards for CPU
@@ -507,7 +508,9 @@ class endRound(object):
         self.calcUser()
         self.calcCPU()
         self.pastPrices=self.calcFlucs()
+        print "\n"+user.name+"'s Windfall cards:"
         self.Windfall(user)
+        print "\nCPU's Windfall Cards:"
         self.Windfall(cpu)
         self.giveStats()
 
@@ -715,7 +718,7 @@ while run:
             os.system('cls')
             print "ShareTrader v1.0\n\nWritten by Abhinav Dhere\n"
             print "This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License."
-            print "See http://creativecommons.org/licenses/by-nc-sa/4.0/ for details."
+            print "See http://creativecommons.org/licenses/by-nc-sa/4.0/ for details.\n"
             raw_input("Press enter to return to menu")
 
         elif i==4:
