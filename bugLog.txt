@@ -8,3 +8,5 @@ Share Trader Alpha Testing:
 ->Debenture buying should not involve specification of no of shares - FIXED
 ->Check if same windfalls are being distributed - FIXED
 ->Rights Issue gave message for no stock even on 'n' -FIXED
+->Syntax error was affecting recursion of Debenture - FIXED
+->Improper behavior of Debenture when insufficient funds- FIXED

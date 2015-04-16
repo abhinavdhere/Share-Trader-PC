@@ -235,13 +235,15 @@ class NewGame(object):
         newRound=NewRound()
         for i in range(2,self.rounds+1):    #create new rounds as per self.rounds 
             print '\nRound number: '+str(i)+'\n'
-            game.displayPrices()
+            self.displayPrices()
             newRound=NewRound()
 
     def endGame(self):
         '''
         Conclude a game
         '''
+        print 'The prices have changed to:'
+        self.displayPrices()
         print '\nAt the end of this game, the user stats are:'
         user.getStats()
         print 'And CPU stats are:'
@@ -262,6 +264,7 @@ class NewRound(NewGame):
     '''
     def __init__(self):
         self.userCreds=self.distribCards()                 #distribute cards at start of round
+        self.showStocks()
         print "\nTo buy shares type buy(space)'Name of Company'(space)'Number of Shares'"
         print "To sell shares type sell(space)'Name of Company'(space)'Number of Shares'"
         print "To pass the turn, type 'pass'"
@@ -313,6 +316,14 @@ class NewRound(NewGame):
                     cardMap[card]+=1        #increments frequency is same windfall card multiple times
 
         return (cardMap,companyCards,windfall)
+
+    def showStocks(self):
+        '''
+        Print the stocks owned by player at start of each round
+        '''
+        if len(user.stock.keys())!=0:
+            print "You currently own the stocks:"
+            print user.stock
     
     def distribCards(self):
         '''
@@ -538,8 +549,8 @@ class endRound(object):
         '''
         Execute windfall cards
         '''
-        cashCards=[]
-        origCash=player.cash
+        cashCards=[]                #aggregates effect of all cash cards
+        origCash=player.cash        #makes a backup of old cash (for cash cards)
         if player==user:
             windDict=self.windUsers.copy()
         elif player==cpu:
@@ -603,8 +614,11 @@ class endRound(object):
             else:
                 raise ValueError            
         except ValueError:
-            print 'Invalid Input'
-            return self.debenture()
+            if player.cash==0:
+                print "Cannot use Debenture"
+            else:
+                print 'Invalid Input'
+                return self.debenture(player)
 
     def rightsIssue(self,player):
         '''
