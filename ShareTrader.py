@@ -3,7 +3,7 @@
 #
 #Author: Abhinav Dhere
 #Date of Starting: 25 March 2015
-#Finished Development & started final alpha testing: 14 April 2015#
+#Finished Development & started final alpha testing: 14 April 2015
 #
 #
 #License: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
@@ -538,19 +538,25 @@ class endRound(object):
         '''
         Execute windfall cards
         '''
-        for card in self.windUsers.keys():
-            for k in range(self.windUsers[card]):
+        cashCards=[]
+        origCash=player.cash
+        if player==user:
+            windDict=self.windUsers.copy()
+        elif player==cpu:
+            windDict=self.windCPU.copy()
+        for card in windDict.keys():
+            for k in range(windDict[card]):
                 if card=='Cash: +10%':
-                    player.cash+=0.1*player.cash
+                    cashCards.append(0.1)
                     print str(player)+' got Cash +10%'
                 elif card=='Cash: -10%':
-                    player.cash-=0.1*player.cash
+                    cashCards.append(-0.1)
                     print str(player)+' got Cash -10%'
                 elif card=='Cash: +20%':
-                    player.cash+=0.2*player.cash
+                    cashCards.append(0.2)
                     print str(player)+' got Cash +20%'
                 elif card=='Cash: -20%':
-                    player.cash-=0.2*player.cash
+                    cashCards.append(-0.2)
                     print str(player)+' got Cash -20%'
                 elif card=='Loan Stock Matured':
                     player.cash+=10000
@@ -560,6 +566,17 @@ class endRound(object):
                     self.debenture(player)
                 elif card=='Rights Issue':
                     self.rightsIssue(player)
+        self.cash(cashCards,player,origCash)
+
+    def cash(self,cashCards,player,origCash):
+        '''
+        Add up all cash cards and use them
+        '''
+        if len(cashCards)==0:
+            return None
+        else:
+            multiplier=sum(cashCards)
+            player.cash+=multiplier*origCash
 
     def debenture(self,player):
         '''
@@ -570,9 +587,8 @@ class endRound(object):
             return
         
         if player==user:
-            inputString=raw_input('>> ')
-            commandList=inputString.split()
-            company=commandList[1]
+            print "Enter name of company where you want to use Debenture:"
+            company=raw_input('>> ')
             stock=int(0.5*user.stock[company])
             
         elif player==cpu:
@@ -606,6 +622,8 @@ class endRound(object):
             ask=raw_input('Use Rights Issue for '+RIcompany+'?(y/n)')
             if ask=='y' and player.stock.get(RIcompany,0)!=0:
                 player.specialSell(RIcompany,self.pastPrices)
+            elif ask=='n':
+                return None
             elif player.stock.get(RIcompany,0)==0:
                 print 'Stocks not available in '+RIcompany
 
