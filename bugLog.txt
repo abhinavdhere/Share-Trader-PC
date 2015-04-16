@@ -1,7 +1,10 @@
 Share Trader Alpha Testing:
 
 ->Display new stock prices in new round - FIXED
-->Fix cash card bug. The cash % values should add up before execution
+->Fix cash card bug. The cash % values should add up before execution - FIXED
 ->Consider adding random guess buying for cpu if no card available -FIXED
 ->Fix rights issue invalid input bug	-FIXED
 ->Inherit CPU from NewUser to remove copied functions	-FIXED
+->Debenture buying should not involve specification of no of shares - FIXED
+->Check if same windfalls are being distributed - FIXED
+->Rights Issue gave message for no stock even on 'n' -FIXED
