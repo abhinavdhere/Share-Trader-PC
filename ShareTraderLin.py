@@ -1,10 +1,12 @@
 #------------------------------------------------------------------------------------------------------------------------
-#This is an attempt to make a single player game similar to Stock Exchange board game.
+#Single player game Share Trader.
 #
 #Author: Abhinav Dhere
 #Date of Starting: 25 March 2015
 #Finished Development & started final alpha testing: 14 April 2015
-#
+#v1.0 release: 20 April 2015 ; First Stable Release
+#v1.1 release:               ; Improved CPU decision making
+#v2.0 release:               ; GUI
 #
 #License: This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
 #         See http://creativecommons.org/licenses/by-nc-sa/4.0/ for details.
